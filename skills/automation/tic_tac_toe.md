@@ -1,20 +1,16 @@
-Strategy for tic-tac-toe (XOXO) challenges:
+Tic-tac-toe (XOXO): Board state is tracked across rounds. Moves are auto-made via dispatchEvent.
+Read `document.title` for result. M = my mark, T = opponent mark, . = empty.
 
-**GOAL: Play optimally with 1 Evaluate + 1 Click per move. Read board, decide, act - all in one round.**
+**Ignore image-grid-selection skill -- this is NOT an image grid.**
 
-Each round:
-1. **Read board + decide + click in one round**. Use Evaluate to read board state:
-   ```js
-   const cells = [...document.querySelectorAll('[class*=square], [class*=cell], [class*=tile], td')];
-   const board = cells.map(el => el.textContent.trim() || (el.querySelector('[class*=x]') ? 'X' : el.querySelector('[class*=o]') ? 'O' : ''));
-   document.title = 'BOARD:' + board.join(',');
-   ```
-2. **In the SAME round**, click the best empty cell immediately. Don't waste a round just reading.
-3. **Optimal play** (priority order): Win > Block > Center > Corner > Edge
-4. **After you win** (3 in a row), click Verify/Submit immediately in the same round.
-5. **After each move**, the opponent may respond. Next round: read updated board + click again.
+Title format: `TTT:{"n":9,"board":"M..T.M..T","best":4,"clicked":true,"myWin":false,"thWin":false,"full":false}`
 
-Key rules:
-- 1 round = 1 Evaluate + 1 Click. Never spend a round only gathering data.
-- Win lines: [0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]
-- Center=4, Corners=0,2,6,8
+**Rules (check title EVERY round):**
+- **myWin is true** -> we won! Click verify: `[{"Click":"#captcha-verify-button"}]`
+- **thWin is true** -> opponent won, refresh: `[{"Click":".captcha-refresh"},{"Wait":800}]`
+- **clicked is true, no winner** -> wait for opponent: `[{"Wait":800}]`
+- **full is true, no winner** -> draw, refresh: `[{"Click":".captcha-refresh"},{"Wait":800}]`
+- **best is -1, not full** -> wait for state: `[{"Wait":800}]`
+- **n != 9 or TTT_ERR** -> board not ready, wait: `[{"Wait":1000}]`
+
+**Do NOT write any Evaluate JS or use ClickPoint. Moves are made automatically.**

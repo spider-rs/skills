@@ -397,6 +397,11 @@ impl SkillRegistry {
         self.skills.iter().find(|s| s.name == name)
     }
 
+    /// Get a mutable reference to a skill by name.
+    pub fn get_mut(&mut self, name: &str) -> Option<&mut Skill> {
+        self.skills.iter_mut().find(|s| s.name == name)
+    }
+
     /// Remove a skill by name.
     pub fn remove(&mut self, name: &str) {
         self.skills.retain(|s| s.name != name);

@@ -95,6 +95,49 @@ pub fn registry() -> SkillRegistry {
     add_js_challenge_page(&mut r);
     add_device_verification(&mut r);
 
+    // ─── Interactive challenge skills ──────────────────────────────────
+    add_checkbox_click(&mut r);
+    add_license_plate(&mut r);
+    add_nested_grid(&mut r);
+    add_whack_a_mole(&mut r);
+    add_find_waldo(&mut r);
+    add_chihuahua_muffin(&mut r);
+    add_reverse_selection(&mut r);
+    add_affirmations(&mut r);
+    add_parking_challenge(&mut r);
+    add_three_d_object(&mut r);
+    add_draw_circle(&mut r);
+    add_push_drag(&mut r);
+    add_dark_hidden(&mut r);
+    add_inkblot_choice(&mut r);
+    add_crafting_recipe(&mut r);
+    add_counting_items(&mut r);
+    add_panorama_match(&mut r);
+    add_eye_chart(&mut r);
+    add_creative_draw(&mut r);
+    add_network_connect(&mut r);
+    add_trading_timing(&mut r);
+    add_text_choice(&mut r);
+    add_sliding_puzzle_v2(&mut r);
+    add_traffic_signal(&mut r);
+    add_rhythm_pattern(&mut r);
+    add_brand_logo(&mut r);
+    add_math_solver(&mut r);
+    add_shuffle_tracking(&mut r);
+    add_match3_game(&mut r);
+    add_odd_one_out(&mut r);
+    add_decision_choice(&mut r);
+    add_face_matching(&mut r);
+    add_slot_machine(&mut r);
+    add_dig_find(&mut r);
+    add_turing_text(&mut r);
+    add_assembly_id(&mut r);
+    add_chess_challenge(&mut r);
+    add_find_person(&mut r);
+    add_floor_nav(&mut r);
+    add_bell_pattern(&mut r);
+    add_final_creative(&mut r);
+
     r
 }
 
@@ -122,10 +165,9 @@ pub fn add_text_captcha(registry: &mut SkillRegistry) {
             "text-captcha",
             "Solve text-based CAPTCHAs, distorted text, and math challenges",
         )
-        .with_trigger(SkillTrigger::html_contains("captcha"))
-        .with_trigger(SkillTrigger::title_contains("captcha"))
+        .with_trigger(SkillTrigger::html_contains("captcha-input"))
+        .with_trigger(SkillTrigger::html_contains("captcha-text"))
         .with_trigger(SkillTrigger::title_contains("wiggles"))
-        .with_trigger(SkillTrigger::title_contains("verify"))
         .with_priority(3)
         .with_content(include_str!("../skills/automation/text_captcha.md")),
     );
@@ -139,8 +181,7 @@ pub fn add_rotation_puzzle(registry: &mut SkillRegistry) {
             "Rotate an image or element to the correct orientation",
         )
         .with_trigger(SkillTrigger::title_contains("rotat"))
-        .with_trigger(SkillTrigger::html_contains("rotate"))
-        .with_trigger(SkillTrigger::html_contains("slider"))
+        .with_trigger(SkillTrigger::html_contains("rotating-item"))
         .with_priority(5)
         .with_content(include_str!("../skills/automation/rotation.md")),
     );
@@ -157,7 +198,9 @@ pub fn add_tic_tac_toe(registry: &mut SkillRegistry) {
         .with_trigger(SkillTrigger::title_contains("tic-tac"))
         .with_trigger(SkillTrigger::title_contains("tic tac"))
         .with_trigger(SkillTrigger::html_contains("tic-tac"))
-        .with_priority(5)
+        .with_trigger(SkillTrigger::html_contains("cell-selected"))
+        .with_trigger(SkillTrigger::html_contains("cell-disabled"))
+        .with_priority(10)
         .with_content(include_str!("../skills/automation/tic_tac_toe.md")),
     );
 }
@@ -171,7 +214,9 @@ pub fn add_word_search(registry: &mut SkillRegistry) {
         )
         .with_trigger(SkillTrigger::title_contains("word search"))
         .with_trigger(SkillTrigger::title_contains("wordsearch"))
-        .with_priority(5)
+        .with_trigger(SkillTrigger::html_contains("word-search-grid-item"))
+        .with_trigger(SkillTrigger::html_contains("word-search"))
+        .with_priority(8)
         .with_content(include_str!("../skills/automation/word_search.md")),
     );
 }
@@ -951,6 +996,444 @@ pub fn add_device_verification(registry: &mut SkillRegistry) {
     );
 }
 
+// ─── Interactive Challenge Skills ────────────────────────────────────────
+
+/// Add simple checkbox click skill.
+pub fn add_checkbox_click(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("checkbox-click", "Click a checkbox to prove you are human")
+            .with_trigger(SkillTrigger::html_contains("captcha-checkbox"))
+            .with_trigger(SkillTrigger::html_contains("checkbox-label"))
+            .with_priority(2)
+            .with_content(include_str!("../skills/automation/checkbox_click.md")),
+    );
+}
+
+/// Add license plate reading skill.
+pub fn add_license_plate(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("license-plate", "Read a license plate from an image and type it")
+            .with_trigger(SkillTrigger::title_contains("license"))
+            .with_trigger(SkillTrigger::title_contains("plate"))
+            .with_priority(6)
+            .with_content(include_str!("../skills/automation/license_plate.md")),
+    );
+}
+
+/// Add nested grid subdivision skill.
+pub fn add_nested_grid(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("nested-grid", "Recursive grid where clicking correct squares subdivides them")
+            .with_trigger(SkillTrigger::title_contains("nested"))
+            .with_trigger(SkillTrigger::html_contains("nested-container"))
+            .with_priority(9)
+            .with_content(include_str!("../skills/automation/nested_grid.md")),
+    );
+}
+
+/// Add whack-a-mole skill.
+pub fn add_whack_a_mole(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("whack-a-mole", "Click moles as they pop up in a grid")
+            .with_trigger(SkillTrigger::title_contains("whack"))
+            .with_trigger(SkillTrigger::title_contains("mole"))
+            .with_priority(9)
+            .with_content(include_str!("../skills/automation/whack_a_mole.md")),
+    );
+}
+
+/// Add find Waldo skill.
+pub fn add_find_waldo(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("find-waldo", "Find Waldo in a crowded Where's Waldo scene")
+            .with_trigger(SkillTrigger::title_contains("waldo"))
+            .with_priority(9)
+            .with_content(include_str!("../skills/automation/find_waldo.md")),
+    );
+}
+
+/// Add chihuahua vs muffin skill.
+pub fn add_chihuahua_muffin(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("chihuahua-muffin", "Distinguish chihuahuas from muffins in image grid")
+            .with_trigger(SkillTrigger::title_contains("muffin"))
+            .with_trigger(SkillTrigger::title_contains("chihuahua"))
+            .with_priority(9)
+            .with_content(include_str!("../skills/automation/chihuahua_muffin.md")),
+    );
+}
+
+/// Add reverse selection skill.
+pub fn add_reverse_selection(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("reverse-selection", "Select images that do NOT contain the specified object")
+            .with_trigger(SkillTrigger::title_contains("reverse"))
+            .with_priority(9)
+            .with_content(include_str!("../skills/automation/reverse_selection.md")),
+    );
+}
+
+/// Add affirmations skill.
+pub fn add_affirmations(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("affirmations", "Find and select the captcha with specific text")
+            .with_trigger(SkillTrigger::title_contains("affirm"))
+            .with_priority(6)
+            .with_content(include_str!("../skills/automation/affirmations.md")),
+    );
+}
+
+/// Add parking challenge skill.
+pub fn add_parking_challenge(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("parking-challenge", "Navigate or drag an object into a target zone")
+            .with_trigger(SkillTrigger::title_contains("parking"))
+            .with_trigger(SkillTrigger::html_contains("parking"))
+            .with_priority(6)
+            .with_content(include_str!("../skills/automation/parking_challenge.md")),
+    );
+}
+
+/// Add 3D object identification skill.
+pub fn add_three_d_object(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("3d-object", "Identify objects from 3D perspective")
+            .with_trigger(SkillTrigger::title_contains("3d"))
+            .with_trigger(SkillTrigger::title_contains("3D"))
+            .with_priority(6)
+            .with_content(include_str!("../skills/automation/three_d_object.md")),
+    );
+}
+
+/// Add draw circle skill.
+pub fn add_draw_circle(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("draw-circle", "Draw a shape by tracing a mouse path")
+            .with_trigger(SkillTrigger::title_contains("circle"))
+            .with_trigger(SkillTrigger::title_contains("draw"))
+            .with_priority(8)
+            .with_content(include_str!("../skills/automation/draw_circle.md")),
+    );
+}
+
+/// Add push/drag skill.
+pub fn add_push_drag(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("push-drag", "Repeatedly drag an object in a direction")
+            .with_trigger(SkillTrigger::title_contains("sisyphus"))
+            .with_trigger(SkillTrigger::html_contains("boulder"))
+            .with_priority(6)
+            .with_content(include_str!("../skills/automation/push_drag.md")),
+    );
+}
+
+/// Add dark/hidden element skill.
+pub fn add_dark_hidden(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("dark-hidden", "Find elements hidden in darkness")
+            .with_trigger(SkillTrigger::title_contains("dark"))
+            .with_priority(6)
+            .with_content(include_str!("../skills/automation/dark_hidden.md")),
+    );
+}
+
+/// Add inkblot/interpretation skill.
+pub fn add_inkblot_choice(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("inkblot-choice", "Interpret or choose from visual prompts")
+            .with_trigger(SkillTrigger::title_contains("rorschach"))
+            .with_priority(6)
+            .with_content(include_str!("../skills/automation/inkblot_choice.md")),
+    );
+}
+
+/// Add crafting recipe skill.
+pub fn add_crafting_recipe(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("crafting-recipe", "Solve crafting or assembly challenges")
+            .with_trigger(SkillTrigger::title_contains("craft"))
+            .with_trigger(SkillTrigger::html_contains("craft"))
+            .with_priority(6)
+            .with_content(include_str!("../skills/automation/crafting_recipe.md")),
+    );
+}
+
+/// Add counting/arrangement skill.
+pub fn add_counting_items(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("counting-items", "Count or arrange items in correct order")
+            .with_trigger(SkillTrigger::title_contains("duck"))
+            .with_priority(6)
+            .with_content(include_str!("../skills/automation/counting_items.md")),
+    );
+}
+
+/// Add panorama matching skill.
+pub fn add_panorama_match(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("panorama-match", "Match or reorder panoramic image segments")
+            .with_trigger(SkillTrigger::title_contains("panora"))
+            .with_priority(6)
+            .with_content(include_str!("../skills/automation/panorama_match.md")),
+    );
+}
+
+/// Add eye chart skill.
+pub fn add_eye_chart(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("eye-chart", "Read text from decreasing-size visual display")
+            .with_trigger(SkillTrigger::title_contains("eye"))
+            .with_trigger(SkillTrigger::title_contains("exam"))
+            .with_priority(6)
+            .with_content(include_str!("../skills/automation/eye_chart.md")),
+    );
+}
+
+/// Add creative drawing skill.
+pub fn add_creative_draw(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("creative-draw", "Draw or create something original")
+            .with_trigger(SkillTrigger::title_contains("creativ"))
+            .with_priority(6)
+            .with_content(include_str!("../skills/automation/creative_draw.md")),
+    );
+}
+
+/// Add network connection skill.
+pub fn add_network_connect(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("network-connect", "Connect nodes or items together")
+            .with_trigger(SkillTrigger::title_contains("network"))
+            .with_priority(6)
+            .with_content(include_str!("../skills/automation/network_connect.md")),
+    );
+}
+
+/// Add trading/timing skill.
+pub fn add_trading_timing(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("trading-timing", "Buy and sell at the right time")
+            .with_trigger(SkillTrigger::title_contains("trader"))
+            .with_trigger(SkillTrigger::title_contains("trading"))
+            .with_priority(6)
+            .with_content(include_str!("../skills/automation/trading_timing.md")),
+    );
+}
+
+/// Add text choice skill.
+pub fn add_text_choice(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("text-choice", "Make a text-based choice or response")
+            .with_trigger(SkillTrigger::title_contains("soul"))
+            .with_priority(5)
+            .with_content(include_str!("../skills/automation/text_choice.md")),
+    );
+}
+
+/// Add sliding puzzle v2 skill.
+pub fn add_sliding_puzzle_v2(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("sliding-puzzle", "Solve a sliding tile puzzle")
+            .with_trigger(SkillTrigger::title_contains("sliding"))
+            .with_trigger(SkillTrigger::html_contains("sliding"))
+            .with_trigger(SkillTrigger::html_contains("puzzle-grid"))
+            .with_priority(8)
+            .with_content(include_str!("../skills/automation/sliding_puzzle_v2.md")),
+    );
+}
+
+/// Add traffic signal skill.
+pub fn add_traffic_signal(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("traffic-signal", "Interact with traffic signals or trees")
+            .with_trigger(SkillTrigger::title_contains("traffic"))
+            .with_priority(6)
+            .with_content(include_str!("../skills/automation/traffic_signal.md")),
+    );
+}
+
+/// Add rhythm/drum pattern skill.
+pub fn add_rhythm_pattern(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("rhythm-pattern", "Reproduce a rhythm or sound pattern")
+            .with_trigger(SkillTrigger::title_contains("drum"))
+            .with_trigger(SkillTrigger::title_contains("rhythm"))
+            .with_priority(7)
+            .with_content(include_str!("../skills/automation/rhythm_pattern.md")),
+    );
+}
+
+/// Add brand logo identification skill.
+pub fn add_brand_logo(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("brand-logo", "Identify brand logos from images")
+            .with_trigger(SkillTrigger::title_contains("brand"))
+            .with_priority(6)
+            .with_content(include_str!("../skills/automation/brand_logo.md")),
+    );
+}
+
+/// Add math solver skill.
+pub fn add_math_solver(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("math-solver", "Solve mathematical equations or expressions")
+            .with_trigger(SkillTrigger::title_contains("math"))
+            .with_trigger(SkillTrigger::title_contains("equation"))
+            .with_priority(7)
+            .with_content(include_str!("../skills/automation/math_solver.md")),
+    );
+}
+
+/// Add shuffle tracking skill.
+pub fn add_shuffle_tracking(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("card-tracking", "Track an object through movement or shuffle")
+            .with_trigger(SkillTrigger::title_contains("shuffle"))
+            .with_priority(7)
+            .with_content(include_str!("../skills/automation/shuffle_tracking.md")),
+    );
+}
+
+/// Add match-3 game skill.
+pub fn add_match3_game(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("match3-game", "Solve a match-3 or tile-matching puzzle")
+            .with_trigger(SkillTrigger::title_contains("candy"))
+            .with_trigger(SkillTrigger::title_contains("crush"))
+            .with_trigger(SkillTrigger::title_contains("match"))
+            .with_priority(7)
+            .with_content(include_str!("../skills/automation/match3_game.md")),
+    );
+}
+
+/// Add odd-one-out / imposter skill.
+pub fn add_odd_one_out(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("odd-one-out", "Find the imposter or odd item among similar ones")
+            .with_trigger(SkillTrigger::title_contains("imposter"))
+            .with_trigger(SkillTrigger::title_contains("impostor"))
+            .with_priority(7)
+            .with_content(include_str!("../skills/automation/odd_one_out.md")),
+    );
+}
+
+/// Add decision/choice skill.
+pub fn add_decision_choice(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("decision-choice", "Make a decision between presented options")
+            .with_trigger(SkillTrigger::title_contains("decision"))
+            .with_trigger(SkillTrigger::title_contains("choose"))
+            .with_priority(5)
+            .with_content(include_str!("../skills/automation/decision_choice.md")),
+    );
+}
+
+/// Add face matching skill.
+pub fn add_face_matching(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("face-matching", "Match or compare faces")
+            .with_trigger(SkillTrigger::title_contains("facial"))
+            .with_trigger(SkillTrigger::title_contains("face"))
+            .with_priority(6)
+            .with_content(include_str!("../skills/automation/face_matching.md")),
+    );
+}
+
+/// Add slot machine skill.
+pub fn add_slot_machine(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("slot-machine", "Stop a spinning element at the right moment")
+            .with_trigger(SkillTrigger::title_contains("slot"))
+            .with_priority(6)
+            .with_content(include_str!("../skills/automation/slot_machine.md")),
+    );
+}
+
+/// Add dig/find skill.
+pub fn add_dig_find(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("dig-find", "Dig or search for a hidden element")
+            .with_trigger(SkillTrigger::title_contains("grave"))
+            .with_priority(6)
+            .with_content(include_str!("../skills/automation/dig_find.md")),
+    );
+}
+
+/// Add reverse Turing text skill.
+pub fn add_turing_text(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("turing-text", "Type a convincing human-like text response")
+            .with_trigger(SkillTrigger::title_contains("turing"))
+            .with_priority(7)
+            .with_content(include_str!("../skills/automation/turing_text.md")),
+    );
+}
+
+/// Add assembly/identification skill.
+pub fn add_assembly_id(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("assembly-id", "Identify items from assembly instructions")
+            .with_trigger(SkillTrigger::title_contains("ikea"))
+            .with_trigger(SkillTrigger::title_contains("assembl"))
+            .with_priority(6)
+            .with_content(include_str!("../skills/automation/assembly_id.md")),
+    );
+}
+
+/// Add chess challenge skill.
+pub fn add_chess_challenge(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("chess-challenge", "Make the best chess move")
+            .with_trigger(SkillTrigger::title_contains("chess"))
+            .with_trigger(SkillTrigger::title_contains("grandmaster"))
+            .with_trigger(SkillTrigger::html_contains("chess"))
+            .with_priority(8)
+            .with_content(include_str!("../skills/automation/chess_challenge.md")),
+    );
+}
+
+/// Add find person skill.
+pub fn add_find_person(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("find-person", "Find a specific person in a crowd or grid")
+            .with_trigger(SkillTrigger::title_contains("jessica"))
+            .with_priority(6)
+            .with_content(include_str!("../skills/automation/find_person.md")),
+    );
+}
+
+/// Add floor navigation skill.
+pub fn add_floor_nav(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("floor-nav", "Navigate through building floors")
+            .with_trigger(SkillTrigger::title_contains("floor"))
+            .with_priority(6)
+            .with_content(include_str!("../skills/automation/floor_nav.md")),
+    );
+}
+
+/// Add bell/sound pattern skill.
+pub fn add_bell_pattern(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("bell-pattern", "Reproduce a bell or sound sequence")
+            .with_trigger(SkillTrigger::title_contains("din"))
+            .with_trigger(SkillTrigger::title_contains("don"))
+            .with_trigger(SkillTrigger::title_contains("dan"))
+            .with_priority(7)
+            .with_content(include_str!("../skills/automation/bell_pattern.md")),
+    );
+}
+
+/// Add final creative challenge skill.
+pub fn add_final_creative(registry: &mut SkillRegistry) {
+    registry.add(
+        Skill::new("final-creative", "Complete a creative final challenge")
+            .with_trigger(SkillTrigger::title_contains("inventor"))
+            .with_priority(6)
+            .with_content(include_str!("../skills/automation/final_creative.md")),
+    );
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -959,10 +1442,10 @@ mod tests {
     fn test_registry_loads_all_skills() {
         let r = registry();
         // 6 original + 19 CAPTCHA + 13 puzzle + 7 form + 10 navigation
-        // + 3 visual + 5 data extraction + 6 security = 69 total skills
+        // + 3 visual + 5 data extraction + 6 security + 41 interactive = 110 total skills
         assert!(
-            r.len() >= 69,
-            "Expected at least 69 skills, got {}",
+            r.len() >= 110,
+            "Expected at least 110 skills, got {}",
             r.len()
         );
     }
