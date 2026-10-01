@@ -39,6 +39,7 @@ Full parameter matrix: `skills/api/parameters.md`
 | `metadata` | boolean | false | Include page metadata |
 | `readability` | boolean | false | Apply readability preprocessing |
 | `proxy_enabled` | boolean | false | Premium proxy routing |
+| `stealth` | boolean | | Headless stealth mode for bot-protected pages |
 
 ## Screenshot Parameters
 
@@ -62,5 +63,18 @@ Full parameter matrix: `skills/api/parameters.md`
     "price": ".product-price",
     "description": ".product-desc"
   }
+}
+```
+
+## Bot-protected pages
+
+For pages that block ordinary requests, set `stealth` and turn on premium proxies:
+
+```json
+{
+  "url": "https://protected-site.com",
+  "return_format": "markdown",
+  "stealth": true,
+  "proxy_enabled": true
 }
 ```

@@ -60,14 +60,13 @@ Reference skills for the [spider.cloud API](https://spider.cloud/docs/api) — e
 | `links` | POST `/links` | Link discovery and extraction |
 | `screenshot` | POST `/screenshot` | Visual page capture |
 | `transform` | POST `/transform` | HTML-to-markdown/text conversion |
-| `unblocker` | POST `/unblocker` | Anti-bot bypass (10-40 extra credits) |
 | `ai` | POST `/ai/crawl`, `/ai/scrape`, `/ai/search`, `/ai/browser`, `/ai/links` | AI-powered Spider routes ([subscription required](https://spider.cloud/ai/pricing)) |
 
 ## Install (Rust)
 
 ```toml
 [dependencies]
-spider_skills = "0.1"
+spider_skills = "0.2"
 ```
 
 ### Feature Flags
