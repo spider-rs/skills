@@ -16,7 +16,6 @@ These routes use base request parameters from `RequestParams` and route-specific
 
 - `/crawl`
 - `/scrape`
-- `/unblocker`
 - `/links`
 - `/search` (uses `SearchRequestParams` + base)
 - `/screenshot` (uses `ScreenshotRequestParams` + base)
